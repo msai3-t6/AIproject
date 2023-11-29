@@ -1,1 +1,22 @@
-# 변경사항 
+## Base Model 
+[Tensorflow 예제 Simple Audio ](https://www.tensorflow.org/tutorials/audio/simple_audio?hl=ko) 를 베이스 모델로 사용하여 수정 
+
+## 수정내용 
+
+11/30
+- 우리가 입력한 데이터를 학습할 수 있도록 데이터 전처리 과정 추가
+- 음성 16비트로 변환, Sample Rate 등 파라미터 입력 데이터에 맞도록 조정 등등
+
+## 실행방법 
+1. 데이터 셋 아래 폴더 구조로 저장 ( dataset ㄴgaesaekki ㄴshibal) 
+2. simple_audio.ipynb 실행하여 학습 및 모델 저장
+
+   - DATASET_PATH = 'C:\\Users\\wise_\\pj2\\simple_audio_20231128\\16bit_datasetset' 라고 되어있는 부분을 개인 폴더 경로로 지정 필요!
+
+   - 상대경로로 지정하면 계속 에러나서 여기만 절대경로로 되어있습니다. 
+
+3. main.py 실행하면 음성 녹음 및 예측 진행 가능
+
+## 코드 문제점 및 개선 필요 사항 
+- '개새끼', '시발' 만 감지하는게 아니라 모든 단어를 예측함.
+- 무음일 경우 (일정 데시벨 이하인 경우)에도 녹음 파일 생성함 
