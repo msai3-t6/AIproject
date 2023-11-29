@@ -10,6 +10,7 @@ from plot_cm import plot_confusion_matrix
 from sklearn.preprocessing import LabelEncoder
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 from tensorflow.keras.layers import Conv1D, MaxPooling1D, Flatten
+from tensorflow.keras.layers import LSTM # for CNN to LSTM
 
 
 
@@ -36,19 +37,22 @@ y = le.fit_transform(df["class_label"].tolist())
 
 y = to_categorical(y)
 
+# Expand dimensions
+X = np.expand_dims(X, axis=2)
+
 ####### train test split ############
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
+# ... (remain the same)
+
 ##### Training ############
 
-model = Sequential([
+model = Sequential([ #Conv1D + LSTM
     Conv1D(64, 3, activation='relu', input_shape=(X_train.shape[1], 1)),
     MaxPooling1D(2),
-    Conv1D(128, 3, activation='relu'),
-    MaxPooling1D(2),
-    Flatten(),
+    LSTM(128),
     Dense(256, activation='relu'),
-    Dropout(0.5),  # Dropout 추가
+    Dropout(0.5),
     Dense(8, activation='softmax') 
 ])
 
@@ -62,7 +66,7 @@ model.compile(
 
 print("Model Score: \n")
 history = model.fit(X_train, y_train, validation_split=0.2, epochs=1000, callbacks=[es, mc])
-model.save("saved_model/WWD_vproject.h5")
+model.save("saved_model/mixed_lstm.h5")
 score = model.evaluate(X_test, y_test)
 print(score)
 

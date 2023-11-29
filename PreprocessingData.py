@@ -22,7 +22,7 @@ for class_label, list_of_files in data_path_dict.items():
         # plt.show()
 
         ##### VISUALIZING MFCC #######
-        mfccs = librosa.feature.mfcc(y=audio, sr=sample_rate, n_mfcc=60)  # 40에서 60으로 변경
+        mfccs = librosa.feature.mfcc(y=audio, sr=sample_rate, n_mfcc=40)  # 60에서 다시 40으로 변경
         print(f"Shape of mfcc for {single_file}:", mfccs.shape)
 
         plt.title(f"MFCC of {single_file}")

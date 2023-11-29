@@ -10,32 +10,43 @@ from plot_cm import plot_confusion_matrix
 from sklearn.preprocessing import LabelEncoder
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 from tensorflow.keras.layers import Conv1D, MaxPooling1D, Flatten
+from tensorflow.keras.layers import LSTM # for CNN to LSTM
+
+
 
 ##### Loading saved csv ##############
 df = pd.read_pickle("final_audio_data_csv/audio_data.csv")
 labels = ["down", "go", "left", "no", "right", "stop", "up", "yes"]
-es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=50)
+es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=40) #50 to 40
 mc = ModelCheckpoint('best_model.h5', monitor='val_accuracy', mode='max', verbose=1, save_best_only=True)
 
-# 추가: 어그멘테이션 데이터 불러오기
-augmented_df = pd.read_pickle("final_audio_data_csv/augmented_audio_data.csv")
-X_augmented = augmented_df["feature"].values
-X_augmented = np.concatenate(X_augmented, axis=0).reshape(len(X_augmented), 60)
-y_augmented = le.transform(augmented_df["class_label"].tolist())
-y_augmented = to_categorical(y_augmented)
+# """
+#                                                feature  class_label
+# 0    [-479.21857, 120.58049, -18.884195, 24.051443,...            0
+# """
 
-# 추가: 기존 데이터와 어그멘테이션 데이터 합치기
-X_combined = np.vstack((X_train, X_augmented))
-y_combined = np.vstack((y_train, y_augmented))
+
+
+####### Making our data training-ready
+X = df["feature"].values
+X = np.concatenate(X, axis=0).reshape(len(X), 40) #60에서 40으로
+
+# Convert string labels to integers
+le = LabelEncoder()
+y = le.fit_transform(df["class_label"].tolist())
+
+y = to_categorical(y)
+
+####### train test split ############
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train = X_train.reshape(X_train.shape[0], X_train.shape[1], 1)
+X_test = X_test.reshape(X_test.shape[0], X_test.shape[1], 1)
 
 ##### Training ############
-# 모델 정의
-model = Sequential([
-    Conv1D(64, 3, activation='relu', input_shape=(X_combined.shape[1], 1)),  # 수정: X_train -> X_combined
-    MaxPooling1D(2),
-    Conv1D(128, 3, activation='relu'),
-    MaxPooling1D(2),
-    Flatten(),
+
+model = Sequential([ # LSTM
+    LSTM(128, return_sequences=True, input_shape=(X_train.shape[1], 1)),
+    LSTM(128),
     Dense(256, activation='relu'),
     Dropout(0.5),
     Dense(8, activation='softmax') 
@@ -43,7 +54,6 @@ model = Sequential([
 
 print(model.summary())
 
-# 모델 컴파일
 model.compile(
     loss="categorical_crossentropy",
     optimizer='adam',
@@ -51,13 +61,8 @@ model.compile(
 )
 
 print("Model Score: \n")
-# 모델 학습
-history = model.fit(X_combined, y_combined, validation_split=0.2, initial_epoch=0, epochs=1000, callbacks=[es, mc])
-
-# 모델 저장
+history = model.fit(X_train, y_train, validation_split=0.2, epochs=1000, callbacks=[es, mc])
 model.save("saved_model/WWD_vproject.h5")
-
-# 모델 평가
 score = model.evaluate(X_test, y_test)
 print(score)
 

@@ -8,17 +8,47 @@ import pandas as pd
 labels = ["down", "go", "left", "no", "right", "stop", "up", "yes"]
 
 # Augmentation 함수 정의
-def apply_augmentation(audio, sample_rate):
-    # Pitch shift
-    pitch_shifted = librosa.effects.pitch_shift(audio, n_steps=2, sr=sample_rate)
+def spec_augment(wav):
+    D = librosa.stft(wav)  # STFT of y
+    S_db = librosa.amplitude_to_db(np.abs(D), ref=np.max)  # Convert an amplitude spectrogram to dB-scaled spectrogram.
 
-    # Time stretch
-    time_stretched = librosa.effects.time_stretch(audio, rate=1.2)
+    freq_mask_param = 10  # Hyperparameter for the number of frequency lines to mask
+    time_mask_param = 10  # Hyperparameter for the number of time steps to mask
+
+    # Frequency masking
+    num_freqs, num_frames = S_db.shape
+    freq_mask = np.random.randint(freq_mask_param, size=1)[0] + 1
+    f0 = np.random.randint(num_freqs - freq_mask, size=1)[0]
+
+    # Time masking
+    time_mask = np.random.randint(time_mask_param, size=1)[0] + 1
+    t0 = np.random.randint(num_frames - time_mask, size=1)[0]
+
+    # Apply masks
+    S_db_masked = S_db.copy()
+    S_db_masked[f0:f0 + freq_mask, :] = 0
+    S_db_masked[:, t0:t0 + time_mask] = 0
+
+    return librosa.istft(S_db_masked)  # Convert the spectrogram back to audio
+
+def noise_injection(wav, noise_factor=0.02):
+    noise = np.random.randn(len(wav))
+    augmented = wav + noise_factor * noise
+    # Cast back to same data type
+    augmented = augmented.astype(type(wav[0]))
+    return augmented
+
+def apply_augmentation(audio, sample_rate):
+    # SpecAugment
+    spec_augmented = spec_augment(audio)
+
+    # Noise Injection
+    noise_injected = noise_injection(audio, noise_factor=0.02)
 
     # 배열을 조인
-    augmented_audio = np.concatenate([pitch_shifted, time_stretched])
-
+    augmented_audio = np.concatenate([spec_augmented, noise_injected])
     return augmented_audio
+
 
 # 라벨에 대한 어그멘테이션 데이터를 저장할 데이터프레임 생성
 augmented_df = pd.DataFrame(columns=["feature", "class_label"])
