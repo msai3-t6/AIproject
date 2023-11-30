@@ -1,3 +1,7 @@
+## 11/30
+-. myproject 폴더 생성</br>
+-. 하위 PreprocessingData.py, training.py, prediction.py, SpecAugment_with_Noise.py 수정 및 재생성
+
 ## CNN, LSTM, CNN+LSTM
 -. 학습 사용 데이터는 용량관계상 별도 보관  
 
