@@ -6,19 +6,45 @@ import tensorflow as tf
 seed = 42
 tf.random.set_seed(seed)
 np.random.seed(seed)
+
 def get_spectrogram(waveform):
+    # Zero-padding for an audio waveform with less than 16,000 samples.
+    input_len = 16000*2
+    waveform = waveform[:input_len]
+    zero_padding = tf.zeros(
+        [16000*2] - tf.shape(waveform),
+        dtype=tf.float32)
+    # Cast the waveform tensors' dtype to float32.
+    waveform = tf.cast(waveform, dtype=tf.float32)
+    # Concatenate the waveform with `zero_padding`, which ensures all audio
+    # clips are of the same length.
+    equal_length = tf.concat([waveform, zero_padding], 0)
     # Convert the waveform to a spectrogram via a STFT.
     spectrogram = tf.signal.stft(
-        waveform, frame_length=1024, frame_step=256)
+        equal_length, frame_length=255, frame_step=128)
     # Obtain the magnitude of the STFT.
     spectrogram = tf.abs(spectrogram)
-    # Transpose the spectrogram to match the shape (height, width, channels).
-    spectrogram = tf.transpose(spectrogram, perm=[1, 0])
-    # Add a `channels` dimension.
-    spectrogram = tf.expand_dims(spectrogram, -1)
-    # Resize the spectrogram to the desired shape (688, 129) using bilinear interpolation.
-    spectrogram = tf.image.resize(spectrogram, [688, 129], method='bilinear')
+    # Add a `channels` dimension, so that the spectrogram can be used
+    # as image-like input data with convolution layers (which expect
+    # shape (`batch_size`, `height`, `width`, `channels`).
+    spectrogram = spectrogram[..., tf.newaxis]
     return spectrogram
+
+
+# def get_spectrogram(waveform):
+#     # Convert the waveform to a spectrogram via a STFT.
+#     spectrogram = tf.signal.stft(
+#         waveform, frame_length=1024, frame_step=256)
+#     # Obtain the magnitude of the STFT.
+#     spectrogram = tf.abs(spectrogram)
+#     # Transpose the spectrogram to match the shape (height, width, channels).
+#     spectrogram = tf.transpose(spectrogram, perm=[1, 0])
+#     # Add a `channels` dimension.
+#     spectrogram = tf.expand_dims(spectrogram, -1)
+#     # Resize the spectrogram to the desired shape (688, 129) using bilinear interpolation.
+#     spectrogram = tf.image.resize(spectrogram, [688, 129], method='bilinear')
+#     return spectrogram
+
 
 
 def preprocess_audiobuffer(waveform):
@@ -39,3 +65,7 @@ def preprocess_audiobuffer(waveform):
     spectogram = tf.expand_dims(spectogram, 0) # 스펙트로그램에 하나의 차원을 추가
     
     return spectogram
+
+
+def calculate_rms(audio):
+    return np.sqrt(np.mean(np.square(audio), axis=-1))
