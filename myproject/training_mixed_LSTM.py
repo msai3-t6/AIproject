@@ -10,13 +10,14 @@ from plot_cm import plot_confusion_matrix
 from sklearn.preprocessing import LabelEncoder
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 from tensorflow.keras.layers import Conv1D, MaxPooling1D, Flatten
+from tensorflow.keras.layers import LSTM
 
 
 
 ##### Loading saved csv ##############
 df = pd.read_pickle("final_audio_data_csv/audio_data.csv")
-labels = ["down", "go", "left", "no", "right", "stop", "up", "yes"]
-es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=50)
+labels = ["shibal", "gaesaekki"]
+es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=40)
 mc = ModelCheckpoint('best_model.h5', monitor='val_accuracy', mode='max', verbose=1, save_best_only=True)
 
 # """
@@ -41,15 +42,13 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 ##### Training ############
 
-model = Sequential([
+model = Sequential([ #Conv1D + LSTM
     Conv1D(64, 3, activation='relu', input_shape=(X_train.shape[1], 1)),
     MaxPooling1D(2),
-    Conv1D(128, 3, activation='relu'),
-    MaxPooling1D(2),
-    Flatten(),
+    LSTM(128),
     Dense(256, activation='relu'),
-    Dropout(0.5),  # Dropout 추가
-    Dense(8, activation='softmax') 
+    Dropout(0.5),
+    Dense(2, activation='softmax') 
 ])
 
 print(model.summary())

@@ -15,8 +15,8 @@ from tensorflow.keras.layers import Conv1D, MaxPooling1D, Flatten
 
 ##### Loading saved csv ##############
 df = pd.read_pickle("final_audio_data_csv/audio_data.csv")
-labels = ["down", "go", "left", "no", "right", "stop", "up", "yes"]
-es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=50)
+labels = ["shibal", "gaesaekki"]
+es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=40)
 mc = ModelCheckpoint('best_model.h5', monitor='val_accuracy', mode='max', verbose=1, save_best_only=True)
 
 # """
@@ -49,7 +49,7 @@ model = Sequential([
     Flatten(),
     Dense(256, activation='relu'),
     Dropout(0.5),  # Dropout 추가
-    Dense(8, activation='softmax') 
+    Dense(2, activation='softmax')  # 라벨 개수 조정에 따른 8 -> 2
 ])
 
 print(model.summary())
