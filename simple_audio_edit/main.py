@@ -4,12 +4,13 @@ import datetime
 from tensorflow.keras import models
 from scipy.io.wavfile import write
 
+
 from recording_helper import record_audio, terminate
-from tf_helper_v2 import preprocess_audiobuffer
+from tf_helper import preprocess_audiobuffer
 
 # !! Modify this in the correct order
 labels = ['gaesaekki', 'others', 'shibal']
-loaded_model = models.load_model("saved_model_3class")
+loaded_model = models.load_model("saved_model_3class_v2")
 threshold_db =  -50
 fs = 16000
 

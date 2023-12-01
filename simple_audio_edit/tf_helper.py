@@ -65,7 +65,3 @@ def preprocess_audiobuffer(waveform):
     spectogram = tf.expand_dims(spectogram, 0) # 스펙트로그램에 하나의 차원을 추가
     
     return spectogram
-
-
-def calculate_rms(audio):
-    return np.sqrt(np.mean(np.square(audio), axis=-1))
