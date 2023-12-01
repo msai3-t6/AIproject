@@ -1,3 +1,7 @@
+## 12/1
+-. requirements 작성</br>
+-. 학습에 사용한 dataset (https://drive.google.com/drive/folders/1EMoV-uc0N9bZXCYz_9vLNYepGSnpZSmc)
+
 ## 11/30
 -. myproject 폴더 생성</br>
 -. 하위 PreprocessingData.py, training.py, prediction.py, SpecAugment_with_Noise.py 수정 및 재생성
