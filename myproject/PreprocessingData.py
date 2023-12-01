@@ -5,13 +5,19 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-labels = ["gaesaekki", "shibal"]
+labels = ["etc", "gaesaekki", "shibal"]
 base_path = './myproject/dataset/'
 
 all_data = []
 df = {}
 
-data_path_dict = {label: [f"{base_path}{label}/" + file_path for file_path in os.listdir(f"{base_path}{label}/")] for label in labels}
+# data_path_dict = {label: [f"{base_path}{label}/" + file_path for file_path in os.listdir(f"{base_path}{label}/")] for label in labels}
+
+data_path_dict = {
+    0: ["./myproject/dataset/etc/" + file_path for file_path in os.listdir("./myproject/dataset/etc/")],
+    1: ["./myproject/dataset/gaesaekki/" + file_path for file_path in os.listdir("./myproject/dataset/gaesaekki/")],
+    2: ["./myproject/dataset/shibal/" + file_path for file_path in os.listdir("./myproject/dataset/shibal/")],    
+}
 
 for class_label, list_of_files in data_path_dict.items():
     for single_file in list_of_files:
@@ -36,6 +42,7 @@ for class_label, list_of_files in data_path_dict.items():
 
 df = pd.DataFrame(all_data, columns=["feature", "class_label"])
 print(df)
+print(df['class_label'].value_counts())
 
 ###### SAVING FOR FUTURE USE ###
 df.to_pickle("final_audio_data_csv/audio_data.csv")

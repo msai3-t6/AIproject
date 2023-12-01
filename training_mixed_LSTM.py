@@ -16,7 +16,7 @@ from tensorflow.keras.layers import LSTM # for CNN to LSTM
 
 ##### Loading saved csv ##############
 df = pd.read_pickle("final_audio_data_csv/audio_data.csv")
-labels = ["down", "go", "left", "no", "right", "stop", "up", "yes"]
+labels = ["background", "etc", "gaesaekki", "shibal"]
 es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=50)
 mc = ModelCheckpoint('best_model.h5', monitor='val_accuracy', mode='max', verbose=1, save_best_only=True)
 
@@ -53,7 +53,7 @@ model = Sequential([ #Conv1D + LSTM
     LSTM(128),
     Dense(256, activation='relu'),
     Dropout(0.5),
-    Dense(8, activation='softmax') 
+    Dense(4, activation='softmax') 
 ])
 
 print(model.summary())

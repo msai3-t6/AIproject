@@ -5,10 +5,10 @@ import soundfile as sf
 import pandas as pd
 
 # 라벨 정의
-labels = ["shibal", "gaesaekki"]
+labels = ["etc", "gaesaekki", "shibal"]
 
 # Augmentation 함수 정의
-def spec_augment(wav, sample_rate):
+def spec_augment(wav, sample_rate, target_length=2):  # target_length는 원하는 길이로 설정
     n_fft = 2048
     hop_length = 512
     D = librosa.stft(wav, n_fft=n_fft, hop_length=hop_length)  # STFT of y
@@ -31,7 +31,18 @@ def spec_augment(wav, sample_rate):
     D_masked[:, t0:t0 + time_mask] = 0
 
     # Convert the spectrogram back to audio using Griffin-Lim algorithm
-    return librosa.istft(D_masked, hop_length=hop_length)
+    audio_augmented = librosa.istft(D_masked, hop_length=hop_length)
+
+    # Adjust the length to the target_length
+    if len(audio_augmented) < sample_rate * target_length:
+        pad_length = sample_rate * target_length - len(audio_augmented)
+        audio_augmented = np.pad(audio_augmented, (0, pad_length), 'constant')
+    elif len(audio_augmented) > sample_rate * target_length:
+        audio_augmented = audio_augmented[:sample_rate * target_length]
+
+    return audio_augmented
+
+# 각 라벨에 대해 augmentation 적용 및 저장
 
 def noise_injection(wav, noise_factor=0.002):
     noise = np.random.uniform(-1, 1, len(wav))

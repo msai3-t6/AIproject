@@ -57,18 +57,13 @@ def record_background_sound(save_path, n_times=50):
         write(save_path + str(i) + ".wav", fs, myrecording)
         print(f"Currently on {i+1}/{start_number + n_times}")
 
-
-
 # Step 1: Record yourself saying the Wake Word
 print("Recording the Wake Word:\n")
 record_audio_and_save("audio_data/", n_times=100) 
 
-
 # # Step 2: Record yourself saying the Wake Word
 # print("Recording the Negative Word:\n")
 # record_audio_and_save("negative_audio/", n_times=100) 
-
-
 
 # # Step 2: Record your background sounds (Just let it run, it will automatically record)
 # print("Recording the Background sounds:\n")

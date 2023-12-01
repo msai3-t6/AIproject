@@ -9,7 +9,7 @@ from tensorflow.keras.models import load_model
 fs = 44100
 seconds = 2
 filename = "prediction.wav"
-class_names = ["gaesaekki", "shibal"]  # Update class_names
+class_names = ["etc", "gaesaekki", "shibal"]  # Update class_names
 
 ##### LOADING OUR SAVED MODEL and PREDICTING ###
 model = load_model("saved_model/myproject_modified_cnn.h5") # update model name
@@ -19,7 +19,7 @@ i = 0
 
 # threshold 변수 정의
 threshold = 0.1
-prob_threshold = 0.99  # 적절한 값으로 변경하세요
+prob_threshold = 0.5  # 적절한 값으로 변경하세요
 
 while True:
     print("Say Now: ")
