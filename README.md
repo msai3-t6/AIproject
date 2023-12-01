@@ -1,9 +1,9 @@
 ## 12/1
 -. requirements 작성</br>
--. 학습에 사용한 dataset (https://drive.google.com/drive/folders/1EMoV-uc0N9bZXCYz_9vLNYepGSnpZSmc)
--. 욕설 단어 학습환경 설명
+-. 학습에 사용한 dataset (https://drive.google.com/drive/folders/1EMoV-uc0N9bZXCYz_9vLNYepGSnpZSmc)</br>
+-. 욕설 단어 학습환경 설명</br>
 1. requirements.txt 확인 후 설치</br>
-2. dataset 다운로드 및 myproject/dataset/gaesaekki, etc, shibal 3개 폴더 위치
+2. dataset 다운로드 및 myproject/dataset/gaesaekki, etc, shibal 3개 폴더 위치</br>
 3. 데이터셋 추가 등 수정 시 PreprocessingData.py → training.py → prediction.py 순 실행 후 테스트
 
 ## 11/30
