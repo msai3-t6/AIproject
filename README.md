@@ -2,9 +2,13 @@
 -. requirements 작성</br>
 -. 학습에 사용한 dataset (https://drive.google.com/drive/folders/1EMoV-uc0N9bZXCYz_9vLNYepGSnpZSmc)</br>
 -. 욕설 단어 학습환경 설명</br>
-1. requirements.txt 확인 후 설치</br>
-2. dataset 다운로드 및 myproject/dataset/gaesaekki, etc, shibal 3개 폴더 위치</br>
-3. 데이터셋 추가 등 수정 시 PreprocessingData.py → training.py → prediction.py 순 실행 후 테스트
+1. requirements.txt 확인 후 설치 (pip install -r requirements.txt)</br>
+2. 직접 학습하려면  dataset 다운로드 및 개인 녹음본 myproject/dataset/gaesaekki, etc, shibal 3개 폴더 위치</br>
+2-1. PreprocessingData.py → training.py → prediction.py 순 실행 후 테스트</br>
+3. fileinput_prediction.py 를 통한 파일 predict</br>
+4. SpecAugment_with_Noise.py 코드 수정
+5. PitchAugment.py 파일 생성
+6. requirements.txt 수정
 
 ## 11/30
 -. myproject 폴더 생성</br>
