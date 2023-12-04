@@ -26,6 +26,8 @@
 
 |폴더명|데이터셋|이슈사항|
 |------|---|---|
-|saved_model_3class_v2|씨발/개새끼 300개 + 기타 250개 |others 를 잘 감지하지 못하는 문제|
-|테스트1|테스트2|테스트3|
-|테스트1|테스트2|테스트3|
+|saved_model_3class_v2|씨발/개새끼 각 300개 + 기타 250개 |others 를 잘 감지하지 못하는 문제|
+|saved_model_3class_hundred_thousand|씨발/개새끼 AUG 각 600개 + 기타 약 13만개 |  class 데이터 불균형으로 인해 모든 것을 others 로 감지|
+|saved_model_3class_1900|씨발/개새끼 AUG 각 600개 + 기타 약 700개 | others 를 잘 감지하지 못함 |
+|saved_model_3class_3000|씨발/개새끼 AUG 각 600개 + 기타 약 1200개 | 개새끼 를 잘 감지하지 못함 |
+
