@@ -18,7 +18,11 @@
 3. main.py 실행하면 음성 녹음 및 예측 진행 가능
 
 ## 코드 문제점 및 개선 필요 사항 
-- 일부 단어를 잘못 예측하는 문제가 있음 
+- 일부 단어를 잘못 예측하는 문제가 있음
+
+- 기타음성 하기 데이터셋에서 랜덤 추출 :
+-    백그라운드 사운드 (https://github.com/karolpiczak/ESC-50)
+-    AI 허브 화자 인식용 음성 데이터(https://aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&aihubDataSe=data&dataSetSn=537) 
 
 
 모델 버전 업데이트 이력
