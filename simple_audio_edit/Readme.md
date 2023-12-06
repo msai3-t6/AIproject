@@ -1,4 +1,4 @@
-![image](https://github.com/ractactia/AIproject/assets/137852127/acb22648-dc6a-487c-9a62-45548bccb22a)## Base Model 
+## Base Model 
 [Tensorflow 예제 Simple Audio ](https://www.tensorflow.org/tutorials/audio/simple_audio?hl=ko) 를 베이스 모델로 사용하여 수정 
 
 ## 수정내용 
@@ -38,4 +38,7 @@
 |saved_model_3class_3800|씨발/개새끼 AUG 각 1200개(정직님 음성 제외) + 기타 약 1400개 | 씨발은 개선되었지만 개새끼는 낮은 정확도 |65.8%|
 |saved_model_3class_3200|씨발 1200개 + 개새끼 1000개(지운님 음성 일부 삭제) + 기타 1000개 | 개새끼 를 잘 감지하지 못함 |67.5%|
 |saved_model_3class_4200|씨발 1200개 + 개새끼 900개(지운님 음성 100개만 사용) + 기타 1000개 | 개새끼 아직 잘 감지 못하지만 이전 대비 개선 |73.3%|
+
+
+![image](https://github.com/ractactia/AIproject/assets/137852127/d56bd7e1-1f80-4056-9d45-167fe3a37bc1)
 
