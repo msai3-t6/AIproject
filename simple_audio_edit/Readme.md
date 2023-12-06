@@ -40,5 +40,7 @@
 |saved_model_3class_4200|씨발 1200개 + 개새끼 900개(지운님 음성 100개만 사용) + 기타 1000개 | 개새끼 아직 잘 감지 못하지만 이전 대비 개선 |73.3%|
 
 
+
+## 라벨별 세부 Accuracy Percentage 
 ![image](https://github.com/ractactia/AIproject/assets/137852127/d56bd7e1-1f80-4056-9d45-167fe3a37bc1)
 
