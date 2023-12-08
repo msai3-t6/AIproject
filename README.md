@@ -10,6 +10,7 @@
 7. VS_특징추출별 시각화 파일 생성
 8. 특징추출별 best_model과 pkl(csv대체) 용량이 매우 크므로 drive에 업로드 https://drive.google.com/drive/folders/1Z-TCXeJrZUE_m3mRfbdMlpe0FXBPRMH6
  8-1.Waveform 모델은 4gb로 google drive 업로드 불가
+9. myproject 폴더 아닌 해당 폴더 내에서 작업 진행하도록 변경
 
 ## 12/1
 -. requirements 작성</br>
