@@ -32,7 +32,7 @@
 
 ## 학습 환경
 -. down ~ yes 총 8개 라벨 원본 음성 데이터 라벨당 1천개</br>
--. 원본 음성 데이터 Augmentation(SpecAugment+Noise(1천개), pitch_shifted(300개), time_strecthed(300개) 음성 데이터 총 1,600개  
+-. 원본 음성 데이터 Augmentation(SpecAugment+Noise(1천개), pitch_shifted(300개), time_strecthed(300개)) 음성 데이터 총 1,600개  
 
 ## 학습 조건
 -. 기존 Hello-detection CNN 개선된 CNN (지이현, 황지운 수정)</br>
