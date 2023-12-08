@@ -1,3 +1,16 @@
+## ~12/8
+1. 본 프로젝트에 알맞는 음성특징 추출 방식 변경을 위한 특징추출방식 확장(旣 MFCC 및 추가 Mel-S, Spectrogram, Waveform)</br>
+2. 추출 방식별 통상적으로 사용되는 모델(1D CNN, CNN, MLP 등)을 사용했으나 모델과 세부 param 변경 테스트 진행 要<br>
+3. 팀원 공유 및 번거로운 작업을 피하고자 특징추출별 별도 py파일 생성</br>
+4. 모든 학습환경 획일화(epoch, es patience, mc bestmodel, learning late 추가적용 및 획일화)</br>
+5. confusion matrix 값 및 score evaluate 저장(Figure, score)</br>
+6. 지표 결과 Mel-s >= MFCC > Waveform > Spectrogram 순</br>
+ 6-1. 라고 생각했으나 모델은 traning 진행할때마다 결과값이 큰 폭으로 변동됨을 확인했으며 6의 값이 절대값이라 전혀 볼 수 없음</br>
+-. git main/simple_audio_edit/file_prediction.py 파일 적용 준비</br>
+7. VS_특징추출별 시각화 파일 생성
+8. 특징추출별 best_model 용량이 매우 크므로 drive에 업로드 https://drive.google.com/drive/folders/1Z-TCXeJrZUE_m3mRfbdMlpe0FXBPRMH6
+ 8-1.Waveform 모델은 4gb로 google drive 업로드 불가
+
 ## 12/1
 -. requirements 작성</br>
 -. 학습에 사용한 dataset (https://drive.google.com/drive/folders/1EMoV-uc0N9bZXCYz_9vLNYepGSnpZSmc)</br>
