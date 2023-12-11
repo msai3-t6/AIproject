@@ -1,4 +1,12 @@
-## ~12/8
+## ~12/12
+1. Prerocessingdata.py / zero-padding 추가 및 변경</br>
+2. training.py / 특징추출별 모델 변경 및 파라미터 변경, Learninglate 추가</br>
+3. VS.py / 평균값 이미지 삭제 및 random 함수 추가</br>
+-. etc(1025ea), gaesaekki(979ea), shibal(949ea)</br>
+-. to do list / 코드 수정에 따른 prediction.py 수정, 혼동행렬/score 이미지 저장, file_prediction.py 적용을 통한 모델별 테스트 결과값 출력, 데이터셋 변경(현재 aug없음)
+
+
+## 12/8
 1. 본 프로젝트에 알맞는 음성특징 추출 방식 변경을 위한 특징추출방식 확장(旣 MFCC 및 추가 Mel-S, Spectrogram, Waveform)</br>
 2. 추출 방식별 통상적으로 사용되는 모델(1D CNN, CNN, MLP 등)을 사용했으나 모델과 세부 param 변경 테스트 진행 要<br>
 3. 팀원 공유 및 번거로운 작업을 피하고자 특징추출별 별도 py파일 생성</br>
@@ -9,7 +17,6 @@
 -. git main/simple_audio_edit/file_prediction.py 파일 적용 준비</br>
 7. VS_특징추출별 시각화 파일 생성
 8. 특징추출별 best_model과 pkl(csv대체) 용량이 매우 크므로 drive에 업로드 https://drive.google.com/drive/folders/1Z-TCXeJrZUE_m3mRfbdMlpe0FXBPRMH6
- 8-1.Waveform 모델은 4gb로 google drive 업로드 불가
 
 ## 12/1
 -. requirements 작성</br>
