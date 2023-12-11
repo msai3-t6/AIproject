@@ -9,27 +9,27 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, confusion_matrix
 from plot_cm import plot_confusion_matrix
 
-# 데이터 로드
+# loading saved pickle
 df = pd.read_pickle("final_audio_data_csv/audio_data_waveform.pkl")
 
-# 입력 데이터 및 라벨 추출
+# seperate feature, class_label, convert shape
 X = np.array(df.feature.tolist())
 y = np.array(df.class_label.tolist())
 
-# 라벨 one-hot 인코딩
+# one-hot encoding
 y = to_categorical(y)
 
-# 데이터 형태
+# check shape
 num_rows = X[0].shape[0]
 
-# 데이터 분할
+# train Test Split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# 데이터 형태 조정
+# convert shape
 X_train = X_train.reshape(X_train.shape[0], num_rows, 1)
 X_test = X_test.reshape(X_test.shape[0], num_rows, 1)
 
-# 모델 구성
+# model
 model = Sequential()
 model.add(Conv1D(filters=16, kernel_size=2, input_shape=(num_rows, 1), activation='relu'))
 model.add(MaxPooling1D(pool_size=2))
@@ -48,31 +48,27 @@ model.add(GlobalAveragePooling1D())
 
 model.add(Dense(y.shape[1], activation='softmax'))
 
-# 모델 컴파일
+# compile
 model.compile(loss='categorical_crossentropy', metrics=['accuracy'], optimizer='adam')
 
-# 콜백 설정
+# callbacks
 callbacks = [ModelCheckpoint(filepath='saved_model/best_model_waveform.h5', verbose=1, save_best_only=True),
              EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=30),
              ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=5, verbose=1, mode='auto', min_lr=0.00001)]
 
-# 모델 학습
+# Model training
 history = model.fit(X_train, y_train, batch_size=32, epochs=300, validation_data=(X_test, y_test), callbacks=callbacks, verbose=1)
 
-# 모델 평가
+# Model evaluation on test data
 score = model.evaluate(X_test, y_test, verbose=0)
 print("Accuracy: ", score[1])
 
-# 모델 분류 보고서
+# Evaluating our model
 print("Model Classification Report: ")
 y_pred = np.argmax(model.predict(X_test), axis=1)
 cm = confusion_matrix(np.argmax(y_test, axis=1), y_pred)
 print(classification_report(np.argmax(y_test, axis=1), y_pred))
-
-# 혼동행렬 출력
 plot_confusion_matrix(cm, classes=["etc", "gaesaekki", "shibal"])
-
-
 
 
 # 기존 코드

@@ -16,16 +16,16 @@ data_path_dict = {
     2: ["./dataset/shibal/" + file_path for file_path in os.listdir("./dataset/shibal/")],    
 }
 
-# 최대 길이 저장 변수
+# def max length
 max_length = 0
 
-# 먼저, 최대 길이를 찾습니다.
+# figure max len
 for class_label, list_of_files in data_path_dict.items():
     for single_file in list_of_files:
         mel_spect = extract_mel_spectrogram(single_file)
         max_length = max(max_length, mel_spect.shape[1])
 
-# 다시 한번 데이터를 순회하면서, 최대 길이에 맞추어 zero-padding을 추가합니다.
+# add zero-padding
 for class_label, list_of_files in data_path_dict.items():
     for single_file in list_of_files:
         mel_spect = extract_mel_spectrogram(single_file)
@@ -34,6 +34,7 @@ for class_label, list_of_files in data_path_dict.items():
         all_data.append([mel_spect, class_label])
     print(f"Info: Successfully Preprocessed Class Label {class_label}")
 
+# convert df
 df = pd.DataFrame(all_data, columns=["feature", "class_label"])
 
 ###### SAVING FOR FUTURE USE ###

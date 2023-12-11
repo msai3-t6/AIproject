@@ -12,20 +12,19 @@ from keras.callbacks import EarlyStopping, ModelCheckpoint, LearningRateSchedule
 from sklearn.metrics import confusion_matrix, classification_report
 from plot_cm import plot_confusion_matrix
 
-# Load preprocessed data from pickle file
+# loading saved pickle
 df = pd.read_pickle("final_audio_data_csv/audio_data_spectrogram.pkl")
 
-# Making data training-ready
+# seperate feature, class_label, convert shape
 X = np.array(df["feature"].tolist())
 X = np.concatenate(X, axis=0).reshape(len(X), X[0].shape[0], X[0].shape[1], 1)  # Reshape for CNN
-
 y = np.array(df["class_label"].tolist())
 y = to_categorical(y)
 
-# Train-test split
+# train Test Split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Model definition
+# def model
 model = Sequential([
     Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=(X_train.shape[1], X_train.shape[2], 1)),
     MaxPooling2D(pool_size=(2, 2)),
@@ -38,7 +37,7 @@ model = Sequential([
 # Model summary
 print(model.summary())
 
-# Callbacks
+# callbacks
 early_stopping = EarlyStopping(monitor='val_loss', patience=30, restore_best_weights=True)
 model_checkpoint = ModelCheckpoint('best_model_spectrogram.h5', monitor='val_accuracy', mode='max', verbose=1, save_best_only=True)
 
@@ -59,7 +58,7 @@ history = model.fit(X_train, y_train, epochs=300, callbacks=[early_stopping, mod
 score = model.evaluate(X_test, y_test)
 print("Test Loss and Accuracy: ", score)
 
-#### Evaluating our model ###########
+# Evaluating our model
 print("Model Classification Report: \n")
 y_pred = np.argmax(model.predict(X_test), axis=1)
 cm = confusion_matrix(np.argmax(y_test, axis=1), y_pred)

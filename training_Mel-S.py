@@ -9,19 +9,20 @@ from sklearn.metrics import classification_report, confusion_matrix
 from plot_cm import plot_confusion_matrix
 import numpy as np
 
-##### Loading saved pickle ##############
+# loading saved pickle
 df = pd.read_pickle("final_audio_data_csv/audio_data_mel-s.pkl")
 
+# seperate feature, class_label
 X = np.array(df.feature.tolist())
 y = np.array(df.class_label.tolist())
 
-##### Reshape for CNN input #######
+# reshape for CNN input
 X = X.reshape(X.shape[0], X.shape[1], X.shape[2], 1)
 
-###### Train Test Split #######
+# train Test Split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=13)
 
-##### CNN Model ########
+# def model
 model = Sequential()
 model.add(Conv2D(32, (3, 3), activation='relu', input_shape=(X.shape[1], X.shape[2], 1)))
 model.add(MaxPooling2D((2, 2)))
@@ -29,11 +30,11 @@ model.add(Conv2D(64, (3, 3), activation='relu'))
 model.add(MaxPooling2D((2, 2)))
 model.add(Flatten())
 model.add(Dense(64, activation='relu'))
-model.add(Dense(3, activation='softmax')) # 3 classes
+model.add(Dense(3, activation='softmax'))
 
 model.compile(optimizer=Adam(), loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
-##### Callbacks #########
+# callbacks
 early_stopping = EarlyStopping(monitor='val_loss', patience=30)
 model_checkpoint = ModelCheckpoint('saved_model/best_model_mel-s.h5', monitor='val_loss', save_best_only=True)
 def scheduler(epoch, lr):
@@ -43,16 +44,15 @@ def scheduler(epoch, lr):
     return lr * 0.9
 lr_scheduler = LearningRateScheduler(scheduler)
 
-##### Training #########
+# training
 history = model.fit(X_train, y_train, epochs=300, batch_size=32, validation_data=(X_test, y_test), callbacks=[early_stopping, model_checkpoint, lr_scheduler])
 
-##### Evaluating our model ###########
-# Test Loss and Accuracy
+# evaluating our model
 score = model.evaluate(X_test, y_test)
 print("Test Loss and Accuracy: ", score)
 
 # Model Classification Report
-y_test_cat = to_categorical(y_test) # 원-핫 인코딩으로 변환
+y_test_cat = to_categorical(y_test)
 y_pred = np.argmax(model.predict(X_test), axis=1)
 print("Model Classification Report: ")
 print(classification_report(np.argmax(y_test_cat, axis=1), y_pred))

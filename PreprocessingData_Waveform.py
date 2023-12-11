@@ -18,16 +18,16 @@ data_path_dict = {
 # 전체 데이터를 저장할 리스트
 all_data = []
 
-# 최대 길이 저장 변수
+# def max len
 max_length = 0
 
-# 먼저, 최대 길이를 찾습니다.
+# figure max len
 for class_label, list_of_files in data_path_dict.items():
     for single_file in list_of_files:
         waveform, sr = librosa.load(single_file, sr=44100)
         max_length = max(max_length, len(waveform))
 
-# 다시 한번 데이터를 순회하면서, 최대 길이에 맞추어 zero-padding을 추가합니다.
+# add zero-padding
 for class_label, list_of_files in data_path_dict.items():
     for single_file in list_of_files:
         waveform, sr = librosa.load(single_file, sr=44100)
@@ -36,7 +36,7 @@ for class_label, list_of_files in data_path_dict.items():
         all_data.append([waveform, class_label])
     print(f"Info: Successfully Preprocessed Class Label {class_label}")
 
-# DataFrame으로 변환
+# convert df
 df = pd.DataFrame(all_data, columns=["feature", "class_label"])
 
 # pkl 파일로 저장
