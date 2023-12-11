@@ -20,7 +20,7 @@ y = np.array(df.class_label.tolist())
 X = X.reshape(X.shape[0], X.shape[1], X.shape[2], 1)
 
 # train Test Split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=13)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # def model
 model = Sequential()
