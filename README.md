@@ -1,6 +1,6 @@
 ## ~12/12
 1. Prerocessingdata.py / zero-padding 추가 및 변경</br>
-2. training.py / 특징추출별 모델 변경 및 파라미터 변경, Learninglate 추가</br>
+2. training.py / 특징추출별 모델 변경 및 파라미터 변경, Learningrate 추가</br>
 3. VS.py / 평균값 이미지 삭제 및 random 함수 추가</br>
 -. 학습조건 etc(1025ea), gaesaekki(979ea), shibal(949ea)</br>
 -. to do list / 코드 수정에 따른 prediction.py 수정, file_prediction.py 적용을 통한 모델별 테스트 결과값 출력, 데이터셋 변경(현재 aug없음)</br>
