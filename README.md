@@ -1,3 +1,6 @@
+## ~12/13
+1. prediction.py 수정
+
 ## ~12/12
 1. Prerocessingdata.py / zero-padding 추가 및 변경</br>
 2. training.py / 특징추출별 모델 변경 및 파라미터 변경, Learningrate 추가</br>
