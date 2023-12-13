@@ -1,44 +1,47 @@
+import os
 import sounddevice as sd
 from scipy.io.wavfile import write
 import librosa
 import numpy as np
 from tensorflow.keras.models import load_model
 
-####### ALL CONSTANTS #####
+# Constants
 fs = 44100
 seconds = 2
 filename = "prediction.wav"
 class_names = ["etc", "gaesaekki", "shibal"]
-threshold = 0.1  # 너무 작은 입력값을 무시하는 임계값
-prob_threshold = 0.5  # 예측 클래스를 출력하는 확률 임계값
+num_columns = 173  # this should be the max_length from your preprocessing step
 
-##### LOADING OUR SAVED MODEL and PREDICTING ###
+# Loading our saved model
 model = load_model("saved_model/best_model_MFCC.h5")
 
+print("Prediction Started: ")
 while True:
     print("Say Now: ")
-    myrecording = sd.rec(int(seconds * fs), samplerate=fs, channels=2)
+    myrecording = sd.rec(int(seconds * fs), samplerate=fs, channels=1)
     sd.wait()
+    write(filename, fs, myrecording)
 
-    # 입력값의 최대 절대값이 임계값보다 큰 경우에만 파일로 저장
-    if np.max(np.abs(myrecording)) > threshold:
-        write(filename, fs, myrecording)
-    else:
-        print("Too quiet. Try again.")
-        continue
-
-    # 오디오 파일에서 MFCC 특징 추출
-    audio, sample_rate = librosa.load(filename)
+    # Extracting MFCC features
+    audio, sample_rate = librosa.load(filename, mono=True, sr=44100)
     mfcc = librosa.feature.mfcc(y=audio, sr=sample_rate, n_mfcc=13)
-    mfcc_processed = np.mean(mfcc.T, axis=0)[:13]  # 처음 13개의 계수만 사용
 
-    # 모델에 입력하여 예측
-    prediction = model.predict(np.expand_dims(mfcc_processed, axis=0))
-    max_prob = np.max(prediction)  # 가장 높은 확률값 확인
-
-    # 확률이 일정 수준 이상일 때만 예측 클래스 출력
-    if max_prob > prob_threshold:
-        predicted_index = np.argmax(prediction)
-        print(f"Predicted class: {class_names[predicted_index]}, Probability: {max_prob}")
+    # Adjust the length of the MFCC to match the expected input shape
+    if mfcc.shape[1] > num_columns:
+        mfcc = mfcc[:, :num_columns]
     else:
-        print("Not sure. Try again.")
+        pad_width = num_columns - mfcc.shape[1]
+        mfcc = np.pad(mfcc, pad_width=((0, 0), (0, pad_width)), mode='constant')
+
+
+    # Reshape for Conv1D
+    input_feature = mfcc[np.newaxis, ...]
+
+    # Predicting the class
+    prediction = model.predict(input_feature)
+    
+    # Converting prediction to class label
+    predicted_class = class_names[np.argmax(prediction)]
+    confidence = np.max(prediction)
+    
+    print(f"Predicted class: {predicted_class}, Confidence: {confidence}")
